@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/06/2023 15:04:05" ReportInfo.Modified="07/06/2023 14:31:20" ReportInfo.CreatorVersion="2023.2.0.0">
+  <Dictionary>
+    <BusinessObjectDataSource Name="Tabela" ReferenceName="Tabela" DataType="System.Int32" Enabled="true">
+      <Column Name="Animal" DataType="System.String"/>
+      <Column Name="Data" DataType="System.DateTime"/>
+      <Column Name="Contagem" DataType="System.Int32"/>
+    </BusinessObjectDataSource>
+    <Parameter Name="pData" DataType="System.String" AsString=""/>
+  </Dictionary>
+  <ReportPage Name="Page1" Guides="9.45,708.75,302.4,396.9" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="94.5" Guides="9.45,28.35,47.25,66.15">
+      <TextObject Name="Text1" Left="9.45" Top="9.45" Width="699.3" Height="18.9" Text="Hello World! :D" HorzAlign="Center" VertAlign="Center" Font="Arial, 16pt, style=Bold"/>
+      <TextObject Name="Text2" Left="302.4" Top="47.25" Width="94.5" Height="18.9" Text="[pData]" HorzAlign="Center" VertAlign="Center" Font="Arial, 16pt, style=Bold"/>
+      <TextObject Name="Text3" Left="945" Text="[Tabela.Animal]" Font="Arial, 10pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="98.5" Width="718.2" Height="18.9">
+      <TextObject Name="Text5" Left="283.5" Width="434.7" Height="18.9" Border.Lines="Bottom" Text="Animal" Font="Arial, 10pt"/>
+      <TextObject Name="Text7" Width="189" Height="18.9" Border.Lines="Bottom" Text="Data" Font="Arial, 10pt"/>
+      <TextObject Name="Text9" Left="189" Width="94.5" Height="18.9" Border.Lines="Bottom" Text="Contagem" Font="Arial, 10pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="121.4" Width="718.2" Height="18.9" DataSource="Tabela">
+      <TextObject Name="Text4" Left="283.5" Width="434.7" Height="18.9" Border.Lines="All" Text="[Tabela.Animal]" Font="Arial, 10pt"/>
+      <TextObject Name="Text6" Width="189" Height="18.9" Border.Lines="All" Text="[Tabela.Data]" Format="Date" Format.Format="d" Font="Arial, 10pt"/>
+      <TextObject Name="Text8" Left="189" Width="94.5" Height="18.9" Border.Lines="All" Text="[Tabela.Contagem]" Font="Arial, 10pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="144.3" Width="718.2" Height="18.9"/>
+  </ReportPage>
+</Report>

@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/01/2023 13:59:02" ReportInfo.Modified="07/07/2023 16:09:04" ReportInfo.CreatorVersion="2023.2.0.0">
+  <ScriptText>using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Data;
+using FastReport;
+using FastReport.Data;
+using FastReport.Dialog;
+using FastReport.Barcode;
+using FastReport.Table;
+using FastReport.Utils;
+
+namespace FastReport
+{
+  public class ReportScript
+  {
+    private void Data3_AfterPrint(object sender, EventArgs e)
+    {
+      Report.SetParameterValue(&quot;QtdVT&quot;, 10);
+      Report.SetParameterValue(&quot;VlrVt&quot;, 4.60);
+
+      int qtdVT = (int)Report.GetParameterValue(&quot;QtdVT&quot;);
+      double vlrVt = (double)Report.GetParameterValue(&quot;VlrVt&quot;);
+
+      double vlrTotal = qtdVT * vlrVt;
+      Report.SetParameterValue(&quot;VlrTotal&quot;, vlrTotal);
+    }
+
+  }
+}
+
+/*begin
+set ('Rodape', '''' + 'Oriente Sistemas' + '''');
+end.
+*/</ScriptText>
+  <Dictionary>
+    <BusinessObjectDataSource Name="Table1" ReferenceName="Table1" DataType="System.Int32" Enabled="true">
+      <Column Name="colaborador" DataType="System.String"/>
+      <Column Name="contribuinte" DataType="System.String"/>
+      <Column Name="cnpj" DataType="System.String"/>
+      <Column Name="enderecocolabolab" DataType="System.String"/>
+      <Column Name="cep" DataType="System.String"/>
+      <Column Name="numero" DataType="System.String"/>
+      <Column Name="bairro" DataType="System.String"/>
+      <Column Name="departamento" DataType="System.String"/>
+      <Column Name="cpf" DataType="System.String"/>
+    </BusinessObjectDataSource>
+    <Parameter Name="QtdVT" DataType="System.String" AsString=""/>
+    <Parameter Name="VlrVt" DataType="System.String" AsString=""/>
+    <Parameter Name="VlrTotal" DataType="System.String" AsString=""/>
+  </Dictionary>
+  <ReportPage Name="Page2" Watermark.Font="Arial, 60pt">
+    <PageHeaderBand Name="PageHeader2" Width="718.2" Height="94.5">
+      <TextObject Name="Text6" Top="47.25" Width="718.2" Height="18.9" Text="[Table1.contribuinte]" HorzAlign="Center" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text7" Top="75.6" Width="718.2" Height="18.9" Text="[Table1.cnpj]" HorzAlign="Center" Font="Arial, 10pt"/>
+      <TextObject Name="Text36" Top="18.9" Width="718.2" Height="18.9" Text="Pedido de Concessão de Vale Transporte" HorzAlign="Center" Font="Arial, 12pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="98.5" Width="718.2" Height="756">
+      <TextObject Name="Text8" Left="18.9" Top="18.9" Width="400.63" Height="18.9" Text="Funcionário: [Table1.colaborador]" Padding="2, 1, 2, 1" Font="Arial, 10pt"/>
+      <TextObject Name="Text9" Left="18.9" Top="41.57" Width="514.03" Height="18.9" Text="Endereço: [Table1.enderecocolab] [Table1.numero] [Table1.bairro]" Padding="2, 1, 2, 1" Font="Arial, 10pt"/>
+      <TextObject Name="Text11" Left="18.9" Top="119.06" Width="718.11" Height="60.47" Text="Solicito a concessão do Vale-Transporte, ciente da minha participação referente ao desconto que me cabe em meu contra-cheque (até 6% do meu salário base), nos termos da Lei nº 7418, de 16 de dezembro de 1985.&#13;&#10;Forneço as informações necessárias para tanto." Padding="2, 1, 2, 1" Font="Arial, 10pt"/>
+      <TextObject Name="Text12" Left="18.9" Top="205.99" Width="400.63" Height="18.9" Text="Linha(s) residência &gt; trabalho (se integrado indicar na mesma linha)" Padding="2, 1, 2, 1" Font="Arial, 10pt"/>
+      <LineObject Name="Line8" Left="18.9" Top="264.57" Width="434.63"/>
+      <LineObject Name="Line9" Left="18.9" Top="302.36" Width="434.63"/>
+      <LineObject Name="Line10" Left="18.9" Top="340.16" Width="434.63"/>
+      <TextObject Name="Text13" Left="18.9" Top="387.4" Width="400.63" Height="18.9" Text="Linha(s) trabalho &gt; residência (se integrado indicar na mesma linha)" Padding="2, 1, 2, 1" Font="Arial, 10pt"/>
+      <LineObject Name="Line11" Left="18.9" Top="453.54" Width="434.63"/>
+      <LineObject Name="Line12" Left="18.9" Top="491.34" Width="434.63"/>
+      <LineObject Name="Line13" Left="18.9" Top="529.13" Width="434.63"/>
+      <TextObject Name="Text14" Left="9.45" Top="561.26" Width="718.11" Height="128.51" Text="Comprometo-me a utilizar o vale transporte exclusivamente para os deslocamentos residência-trabalho-residência, bem como a manter atualizadas as informações acima prestadas. Declaro ainda que as informações supra são a expressão da ver dade, ciente de que o erro nas mesmas, ou o uso indevido do vale, constituirá falta grave, passível de demissão por justa causa e configura crime de falsidade ideológica, de que trata o artigo 299 do Código Penal, sujeitando o empregado as penas de reclusão de até tres anos, além de multa." Padding="2, 1, 2, 1" Font="Arial, 10pt"/>
+      <TextObject Name="Text15" Left="170.08" Top="727.56" Width="340.16" Height="18.9" Border.Lines="Top" Text="[Table1.colaborador]" Padding="2, 1, 2, 1" HorzAlign="Center" Font="Arial, 10pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter2" Top="858.5" Width="718.2" Height="28.35"/>
+  </ReportPage>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <PageHeaderBand Name="PageHeader1" Width="718.2" Height="103.95">
+      <TextObject Name="Text16" Top="28.35" Width="718.2" Height="18.9" Text="Declaração de Não Beneficiário de Vale Transporte&#13;&#10;" HorzAlign="Center" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text17" Top="66.15" Width="718.2" Height="18.9" Text="[Table1.contribuinte]" AutoWidth="true" HorzAlign="Center" Font="Arial, 10pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data2" Top="107.95" Width="718.2" Height="567">
+      <TextObject Name="Text18" Left="28.35" Top="18.9" Width="103.95" Height="18.9" Text="Funcionario:[Table1.colaborador]" AutoWidth="true" Font="Arial, 10pt"/>
+      <TextObject Name="Text19" Left="396.9" Top="18.9" Width="113.4" Height="18.9" Text="CPF: [Table1.cpf]" AutoWidth="true" Font="Arial, 10pt"/>
+      <TextObject Name="Text20" Left="28.35" Top="103.95" Width="538.65" Height="283.5" Text="Declaro, para os devidos fins, que não desejo usufruir dos beneficios do vale transporte, instituido pela Lei nº 7418/85 e alterações da Lei n. 7619/87 comprometendo-me a comunicar a empresa se houver, no futuro, qualquer modificação nas razões que determinaram esta minha decisão.&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;01 - (  )  Residencia proxima ao local de trabalho&#13;&#10;&#13;&#10;02 - (  ) Meio de Transporte próprio&#13;&#10;&#13;&#10;03 - (  )  Custo do Transporte inferior a 6% do salário-base&#13;&#10;&#13;&#10;04 - (  ) Outros -  ___________________________&#13;&#10;" Font="Arial, 10pt"/>
+      <TextObject Name="Text21" Left="207.9" Top="198.45" Width="160.65" Height="18.9" Text="Motivo da Declaração" Font="Arial, 10pt"/>
+      <LineObject Name="Line15" Left="189" Top="463.05" Width="340.2"/>
+      <LineObject Name="Line16" Left="992.25" Top="113.4"/>
+      <TextObject Name="Text27" Left="217.35" Top="472.5" Width="94.5" Height="18.9" Text="[Table1.colaborador]" AutoWidth="true" Font="Arial, 10pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="678.95" Width="718.2" Height="18.9"/>
+  </ReportPage>
+  <ReportPage Name="Page3" Guides="0" Watermark.Font="Arial, 60pt">
+    <PageHeaderBand Name="PageHeader3" Width="718.2" Height="217.35">
+      <TextObject Name="Text22" Left="179.55" Top="9.45" Width="378" Height="18.9" Text="Recibo de entrega vale transporte &#13;&#10;" HorzAlign="Center" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text23" Left="179.55" Top="37.8" Width="378" Height="18.9" Text="[Table1.contribuinte]" HorzAlign="Center" Font="Arial, 10pt"/>
+      <TextObject Name="Text24" Left="179.55" Top="66.15" Width="378" Height="18.9" Text="[Table1.cnpj]" HorzAlign="Center" Font="Arial, 10pt"/>
+      <LineObject Name="Line14" Top="113.4" Width="718.2"/>
+      <TextObject Name="Text25" Left="18.9" Top="122.85" Width="94.5" Height="18.9" Text="Funcionario: [Table1.colaborador]" AutoWidth="true" Font="Arial, 10pt"/>
+      <TextObject Name="Text26" Left="18.9" Top="151.2" Width="94.5" Height="18.9" Text="Endereço:[Table1.enderecocolab]   [Table1.bairro]   - [Table1.numero]" AutoWidth="true" Font="Arial, 10pt"/>
+      <TextObject Name="Text28" Left="18.9" Top="189" Width="94.5" Height="18.9" Text="Empresa &#13;&#10;" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text29" Left="151.2" Top="189" Width="122.85" Height="18.9" Text="Linha - itinerário&#13;&#10;&#13;&#10;" AutoWidth="true" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text30" Left="463.05" Top="189" Width="37.8" Height="18.9" Text="Qtde.&#13;&#10;" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text31" Left="510.3" Top="189" Width="94.5" Height="18.9" Text="Valor unitário&#13;&#10;" AutoWidth="true" Font="Arial, 9pt, style=Bold"/>
+      <TextObject Name="Text32" Left="614.25" Top="189" Width="103.95" Height="18.9" Text="Valor Total " Font="Arial, 9pt, style=Bold"/>
+    </PageHeaderBand>
+    <DataBand Name="Data3" Top="221.35" Width="718.2" Height="66.15" AfterPrintEvent="Data3_AfterPrint" Guides="37.8,9.45,9.45,47.25,47.25,56.7,9.45,0,0,0,0,0,0,9.45,9.45">
+      <TextObject Name="Text33" Left="463.05" Top="18.9" Width="37.8" Height="18.9" Text="[QtdVT]" Font="Arial, 10pt"/>
+      <TextObject Name="Text34" Left="510.3" Top="18.9" Width="85.05" Height="18.9" Text="[VlrVt]" Font="Arial, 10pt"/>
+      <TextObject Name="Text35" Left="614.25" Top="18.9" Width="94.5" Height="18.9" Text="[VlrTotal]" Font="Arial, 10pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter3" Top="291.5" Width="718.2" Height="160.65"/>
+  </ReportPage>
+</Report>

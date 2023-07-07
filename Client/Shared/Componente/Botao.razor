@@ -1,0 +1,33 @@
+﻿@if (String.IsNullOrEmpty(Imagem))
+{
+   <button type="@Tipo" @attributes="AtributosAdicionais" disabled=@Desabilitado >@Texto</button> 
+}
+else
+{
+    <button type="@Tipo" @attributes="AtributosAdicionais" disabled=@Desabilitado>
+        @Texto
+        <img class="icon" src=@($"imagens/{@Imagem}.png") alt="@Imagem">                 
+    </button>
+}
+
+@code {
+    [Parameter]
+    public string Texto { get; set; }
+
+    [Parameter]
+    public string Imagem { get; set; }
+
+    [Parameter]
+    public string Tipo { get; set; } = "button";
+
+    [Parameter]
+    public bool Desabilitado { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AtributosAdicionais { get; set; }
+
+    //protected override async Task OnParametersSetAsync()
+    //{
+    //    //StateHasChanged();
+    //}
+}

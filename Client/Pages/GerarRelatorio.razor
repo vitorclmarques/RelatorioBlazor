@@ -1,0 +1,121 @@
+﻿@page "/relatorio/todos"
+@using System.Net
+@using System.Diagnostics
+@using System.Text
+@using RelatorioBlazor.Client.Shared.Componente
+@using RelatorioBlazor.Shared;
+
+@inject HttpClient http;
+@inject IJSRuntime js;
+
+<div id="relatorioinicio" style="width: 100%;  padding: 0.5rem; background-color:bisque; z-index: 100">
+    <!--height:3rem;-->            
+    
+    <a style="margin-right: 1rem" class="a-btn" onclick="document.getElementById('relatorioinicio').scrollIntoView()">Ir para o cabeçalho</a>
+    <a style="margin-right: 1rem" class="a-btn" onclick="document.getElementById('relatoriofim').scrollIntoView()">Ir para última página</a>
+    
+    <p style="display:inline-block; margin-left: 1rem;"><b>Controles de Zoom:</b></p>
+    <Botao Texto="+" style="border-radius: 100%; width:1.75rem; height:1.75rem" @onclick="() => funcaoZoom(++nivelZoom)" />
+    <Botao Texto="-" style="border-radius: 100%; width:1.75rem; height:1.75rem" @onclick="() => funcaoZoom(--nivelZoom)"/>
+    
+    <p style="display:inline-block; margin-left: 1rem;"><b>Exportar relatório:</b></p>
+    <Botao Texto="@(arquivoPDF.Length != 1 ? "PDF/A" : "Aguardando")" Imagem="pdf" @onclick="downloadPDF" Desabilitado="@(arquivoPDF.Length != 1 ? false : true)" />
+
+    <Botao Texto="Gerar relatório" @onclick="async() => await gerarRelatorio()" />
+
+</div>
+
+<div id="relatorioinicio" style="width: 100%; padding: 1rem; background-color: gray;z-index: 100; margin-top: 2rem;">
+
+
+<div class="zoom" style="align-content: center; padding:3%; background-color:white; zoom: @nivelZoomString">
+
+    @((MarkupString)pagina)
+
+    <div id="relatoriofim">&nbsp;</div>
+
+</div>
+</div>
+
+@code {
+
+    short nivelZoom = 3;
+    string nivelZoomString = "100%";
+
+    string pagina;
+
+    byte[] arquivoPDF = new[] { (byte)0 };
+
+
+    async Task gerarRelatorio()
+    {
+        Dictionary<string, object> parametrosRelatorio = new() { { "QtdVT", 10 }, { "VlrVt", 10 }, { "VlrTotal",100 } };
+
+
+        Dictionary<string, object> parametrosSql = new() { { "Contribuinte", 1 } };
+
+        //Nome do Controlador ({Nome}Controller.cs) + Caminho
+        var relatorio = await http.PostAsJsonAsync($"Relatorio/GerarRelatorio", new CorpoRequisicaoRelatorio() { parametrosRelatorio = parametrosRelatorio, parametrosSql = parametrosSql });
+
+        pagina = await relatorio.Content.ReadAsStringAsync();
+
+        gerarPDF();
+
+        StateHasChanged();
+
+    }
+
+
+
+    async Task gerarPDF()
+    {
+        var a = await http.PostAsJsonAsync("Relatorio/GerarPdf", pagina.ToString().Replace("<br>", ""));
+        
+        arquivoPDF = await a.Content.ReadAsByteArrayAsync();
+
+        StateHasChanged();
+    }
+
+
+
+    async Task funcaoZoom(short nivelZoom)
+    {
+        if(nivelZoom < 0) { nivelZoom = 0; }
+        if(nivelZoom > 5) { nivelZoom = 5; }
+
+        nivelZoomString = fatorZoom(nivelZoom);
+
+        StateHasChanged();
+    }
+
+
+
+    string fatorZoom(short nivel) =>
+    nivel switch
+    {
+        0 => "100%",
+        1 => "110%",
+        2 => "125%",
+        3 => "150%",
+        4 => "175%",
+        5 => "200%",
+    };
+
+
+    async Task downloadPDF()
+    {
+        using (MemoryStream streamArquivo = new())
+        {
+            using DotNetStreamReference streamRef = new(stream: new MemoryStream(arquivoPDF));
+
+            await js.InvokeVoidAsync("downloadFileFromStream", $"Relatorio-{DateTime.Now.ToString("ddMMyyyyHHmm")}.pdf", streamRef);
+        }
+    }
+
+
+
+    public static Stream GenerateStreamFromString(string s)
+    {
+        return new MemoryStream(Encoding.UTF8.GetBytes(s));
+    }
+}
